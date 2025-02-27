@@ -1,0 +1,15 @@
+#Ignoring .env files 
+.env
+
+
+# ignoring venv files
+venv
+
+
+# pytest 
+
+.pytest_cache
+
+# cache 
+
+*__pycache__*

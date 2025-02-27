@@ -1,0 +1,155 @@
+[
+    {
+        "label": "BaseSettings",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "motor.motor_asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "motor.motor_asyncio",
+        "description": "motor.motor_asyncio",
+        "detail": "motor.motor_asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "app.core.config",
+        "description": "app.core.config",
+        "isExtraImport": true,
+        "detail": "app.core.config",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "database",
+        "importPath": "app.core.database",
+        "description": "app.core.database",
+        "isExtraImport": true,
+        "detail": "app.core.database",
+        "documentation": {}
+    },
+    {
+        "label": "database",
+        "importPath": "app.core.database",
+        "description": "app.core.database",
+        "isExtraImport": true,
+        "detail": "app.core.database",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson",
+        "description": "bson",
+        "isExtraImport": true,
+        "detail": "bson",
+        "documentation": {}
+    },
+    {
+        "label": "Settings",
+        "kind": 6,
+        "importPath": "btg.app.core.config",
+        "description": "btg.app.core.config",
+        "peekOfCode": "class Settings(BaseSettings):\n    \"\"\"Application configuration using Pydantic to manage environment variables.\"\"\"\n    PROJECT_NAME: str = \"FastAPI Hexagonal API\"\n    PROJECT_VERSION: str = \"1.0.0\"\n    MONGO_URI: str = \"mongodb://localhost:27017\"\n    MONGO_DB: str = \"fastapi_db\"\n    class Config:\n        \"\"\"Additional configuration to load variables from a .env file.\"\"\"\n        env_file = \".env\"\nsettings = Settings()",
+        "detail": "btg.app.core.config",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "kind": 5,
+        "importPath": "btg.app.core.config",
+        "description": "btg.app.core.config",
+        "peekOfCode": "settings = Settings()",
+        "detail": "btg.app.core.config",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "btg.app.core.database",
+        "description": "btg.app.core.database",
+        "peekOfCode": "client = motor.motor_asyncio.AsyncIOMotorClient(settings.MONGO_URI)\ndatabase = client[settings.MONGO_DB]",
+        "detail": "btg.app.core.database",
+        "documentation": {}
+    },
+    {
+        "label": "database",
+        "kind": 5,
+        "importPath": "btg.app.core.database",
+        "description": "btg.app.core.database",
+        "peekOfCode": "database = client[settings.MONGO_DB]",
+        "detail": "btg.app.core.database",
+        "documentation": {}
+    },
+    {
+        "label": "get_database",
+        "kind": 2,
+        "importPath": "btg.app.core.dependencies",
+        "description": "btg.app.core.dependencies",
+        "peekOfCode": "def get_database():\n    \"\"\"Dependency to get the database instance.\"\"\"\n    return database",
+        "detail": "btg.app.core.dependencies",
+        "documentation": {}
+    },
+    {
+        "label": "UserModel",
+        "kind": 6,
+        "importPath": "btg.app.domains.users.models",
+        "description": "btg.app.domains.users.models",
+        "peekOfCode": "class UserModel(BaseModel):\n    \"\"\"User model based on IP.\"\"\"\n    id: Optional[str] = None  # MongoDB will assign the ID automatically\n    ip: str  # User identification\n    class Config:\n        orm_mode = True\n        json_encoders = {ObjectId: str}  # Convert ObjectId to string",
+        "detail": "btg.app.domains.users.models",
+        "documentation": {}
+    },
+    {
+        "label": "UserRepository",
+        "kind": 6,
+        "importPath": "btg.app.domains.users.repository",
+        "description": "btg.app.domains.users.repository",
+        "peekOfCode": "class UserRepository:\n    \"\"\"Handles CRUD operations for users identified by IP.\"\"\"\n    @staticmethod\n    async def get_by_ip(ip: str):\n        \"\"\"Retrieve a user by IP.\"\"\"\n        return await database[\"users\"].find_one({\"ip\": ip})\n    @staticmethod\n    async def register_user(ip: str):\n        \"\"\"Register a user using IP as an identifier.\"\"\"\n        existing_user = await UserRepository.get_by_ip(ip)",
+        "detail": "btg.app.domains.users.repository",
+        "documentation": {}
+    },
+    {
+        "label": "UserSchema",
+        "kind": 6,
+        "importPath": "btg.app.domains.users.schemas",
+        "description": "btg.app.domains.users.schemas",
+        "peekOfCode": "class UserSchema(BaseModel):\n    \"\"\"Schema for a user identified by IP.\"\"\"\n    ip: str",
+        "detail": "btg.app.domains.users.schemas",
+        "documentation": {}
+    }
+]

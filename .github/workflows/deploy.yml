@@ -1,0 +1,31 @@
+name: Deploy to AWS Lambda with CloudFormation
+
+on:
+  push:
+    branches:
+      - main # Change to your deployment branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t my-fastapi-app .
+          docker tag my-fastapi-app <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/my-fastapi-app
+          docker push <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/my-fastapi-app
+
+      - name: Deploy to AWS Lambda with CloudFormation
+        run: |
+          aws cloudformation deploy \
+            --template-file cloudformation.yml \
+            --stack-name FastAPI-Lambda \
+            --capabilities CAPABILITY_NAMED_IAM

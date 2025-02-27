@@ -1,0 +1,15 @@
+[tool.ruff]
+line-length = 88  # Límite de caracteres por línea (como Black)
+select = ["E", "F", "I", "UP", "B", "PL"]  # Errores y advertencias específicas
+ignore = ["E501"]  # Ignorar longitudes de línea, ya que Black lo maneja
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
